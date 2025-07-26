@@ -10,12 +10,12 @@ import GuestLayout from "@/components/GuestLayout.vue";
       >
         Sign up to your account
       </h2>
-      <form class="space-y-6" action="#" method="POST">
+      <form class="space-y-3" action="#" method="POST">
         <div>
           <label for="name" class="block font-medium text-gray-900 text-sm/6"
             >Name</label
           >
-          <div class="mt-2">
+          <div class="mt-1">
             <input
               type="text"
               id="name"
@@ -29,7 +29,7 @@ import GuestLayout from "@/components/GuestLayout.vue";
           <label for="email" class="block font-medium text-gray-900 text-sm/6"
             >Email address</label
           >
-          <div class="mt-2">
+          <div class="mt-1">
             <input
               type="email"
               id="email"
@@ -48,7 +48,7 @@ import GuestLayout from "@/components/GuestLayout.vue";
               >Password</label
             >
           </div>
-          <div class="mt-2">
+          <div class="mt-1">
             <input
               type="password"
               id="password"
@@ -66,7 +66,7 @@ import GuestLayout from "@/components/GuestLayout.vue";
               >Confirm Password</label
             >
           </div>
-          <div class="mt-2">
+          <div class="mt-1">
             <input
               type="password"
               id="confirm-password"
