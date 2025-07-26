@@ -27,6 +27,11 @@ const routes = [
     component: () => Signup,
   },
   {
+    path: "/profile",
+    name: "profile",
+    component: () => Profile,
+  },
+  {
     path: "/:catchAll(.*)",
     name: "not-found",
     component: () => NotFound,
