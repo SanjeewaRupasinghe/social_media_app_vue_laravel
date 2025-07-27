@@ -1,22 +1,40 @@
 <script setup>
+import axiosClient from "@/axios";
 import GuestLayout from "@/components/GuestLayout.vue";
+import { ref } from "vue";
+
+const data = ref({
+  name: "",
+  email: "",
+  password: "",
+  password_confirmation: "",
+});
+
+const submit = () => {
+  console.log(data.value);
+
+  axiosClient.get("/sanctum/csrf-cookie").then((response) => {
+    axiosClient.post("/register", data.value);
+  });
+};
 </script>
 
 <template>
-  <GuestLayout> 
+  <GuestLayout>
     <div class="mt-10 space-y-6 sm:mx-auto sm:w-full sm:max-w-sm">
       <h2
         class="mt-10 font-bold tracking-tight text-center text-gray-900 text-2xl/9"
       >
         Sign up to your account
       </h2>
-      <form class="space-y-3" action="#" method="POST">
+      <form @submit.prevent="submit" class="space-y-3" action="#" method="POST">
         <div>
           <label for="name" class="block font-medium text-gray-900 text-sm/6"
             >Name</label
           >
           <div class="mt-1">
             <input
+              v-model="data.name"
               type="text"
               id="name"
               autocomplete="name"
@@ -31,6 +49,7 @@ import GuestLayout from "@/components/GuestLayout.vue";
           >
           <div class="mt-1">
             <input
+              v-model="data.email"
               type="email"
               id="email"
               autocomplete="email"
@@ -50,6 +69,7 @@ import GuestLayout from "@/components/GuestLayout.vue";
           </div>
           <div class="mt-1">
             <input
+              v-model="data.password"
               type="password"
               id="password"
               autocomplete="current-password"
@@ -68,6 +88,7 @@ import GuestLayout from "@/components/GuestLayout.vue";
           </div>
           <div class="mt-1">
             <input
+              v-model="data.password_confirmation"
               type="password"
               id="confirm-password"
               autocomplete="current-password"
@@ -90,10 +111,12 @@ import GuestLayout from "@/components/GuestLayout.vue";
       <p class="mt-10 text-center text-gray-500 text-sm/6">
         Already have an account?
         {{ " " }}
-        <router-link :to="{name:'login'}" class="font-semibold text-indigo-600 hover:text-indigo-500"
+        <router-link
+          :to="{ name: 'login' }"
+          class="font-semibold text-indigo-600 hover:text-indigo-500"
           >Login</router-link
         >
       </p>
     </div>
-    </GuestLayout>
+  </GuestLayout>
 </template>

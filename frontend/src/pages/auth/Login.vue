@@ -1,5 +1,28 @@
 <script setup>
 import GuestLayout from "@/components/GuestLayout.vue";
+import { ref } from "vue";
+import axiosClient from "@/axios";
+import router from "@/router";
+
+const data = ref({
+  email: "",
+  password: "",
+});
+
+const submit = () => {
+  console.log(data.value);
+
+  axiosClient.get("/sanctum/csrf-cookie").then((response) => {
+    axiosClient
+      .post("/login", data.value)
+      .then((response) => {
+        router.push({ name: "home" });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  });
+};
 </script>
 
 <template>
@@ -10,13 +33,14 @@ import GuestLayout from "@/components/GuestLayout.vue";
       >
         Sign in to your account
       </h2>
-      <form class="space-y-3" action="#" method="POST">
+      <form @submit.prevent="submit" class="space-y-3" method="POST">
         <div>
           <label for="email" class="block font-medium text-gray-900 text-sm/6"
             >Email address</label
           >
           <div class="mt-1">
             <input
+              v-model="data.email"
               type="email"
               name="email"
               id="email"
@@ -44,6 +68,7 @@ import GuestLayout from "@/components/GuestLayout.vue";
           </div>
           <div class="mt-1">
             <input
+              v-model="data.password"
               type="password"
               name="password"
               id="password"
@@ -67,7 +92,9 @@ import GuestLayout from "@/components/GuestLayout.vue";
       <p class="mt-10 text-center text-gray-500 text-sm/6">
         Not a member?
         {{ " " }}
-        <router-link :to="{name:'signup'}" class="font-semibold text-indigo-600 hover:text-indigo-500"
+        <router-link
+          :to="{ name: 'signup' }"
+          class="font-semibold text-indigo-600 hover:text-indigo-500"
           >Sign up</router-link
         >
       </p>
