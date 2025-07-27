@@ -17,4 +17,6 @@ Route::get('/', function () {
     return ['Laravel' => app()->version()];
 });
 
+Route::get('logs', [\Rap2hpoutre\LaravelLogViewer\LogViewerController::class, 'index']);
+
 require __DIR__.'/auth.php';

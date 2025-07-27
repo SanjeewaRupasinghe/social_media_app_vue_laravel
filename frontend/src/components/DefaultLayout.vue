@@ -1,4 +1,35 @@
+<script setup>
+import {
+  Disclosure,
+  DisclosureButton,
+  DisclosurePanel,
+  Menu,
+  MenuButton,
+  MenuItem,
+  MenuItems,
+} from "@headlessui/vue";
+import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/vue/24/outline";
+import useUserStore from "@/store/user.js";
+import { computed } from "vue";
+
+const userStore = useUserStore();
+
+const user = computed(() => userStore.user);
+const navigation = [
+  { name: "Home", to: { name: "home" } },
+  { name: "Images", to: { name: "images" } },
+];
+
+function logout() {
+  console.log("logout");
+}
+
+console.log(user.value);
+
+</script>
+
 <template>
+  
   <div class="min-h-full">
     <Disclosure as="nav" class="bg-gray-800" v-slot="{ open }">
       <div class="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
@@ -48,6 +79,7 @@
                   <span class="absolute -inset-1.5" />
                   <span class="sr-only">Open user menu</span>
                   <img
+                    v-if="user"
                     class="rounded-full size-8"
                     :src="user.imageUrl"
                     alt=""
@@ -65,11 +97,9 @@
                   <MenuItems
                     class="absolute right-0 z-10 w-48 py-1 mt-2 origin-top-right bg-white rounded-md shadow-lg ring-1 ring-black/5 focus:outline-hidden"
                   >
-                    <MenuItem 
-                      v-slot="{ active }"
-                    >
+                    <MenuItem v-slot="{ active }">
                       <router-link
-                        :to="{name:'profile'}"
+                        :to="{ name: 'profile' }"
                         :class="[
                           active ? 'bg-gray-100 outline-hidden' : '',
                           'block px-4 py-2 text-sm text-gray-700',
@@ -77,9 +107,7 @@
                         >View Profile</router-link
                       >
                     </MenuItem>
-                    <MenuItem 
-                      v-slot="{ active }"
-                    >
+                    <MenuItem v-slot="{ active }">
                       <button
                         @click="logout"
                         :class="[
@@ -174,31 +202,3 @@
     </main>
   </div>
 </template>
-
-<script setup>
-import {
-  Disclosure,
-  DisclosureButton,
-  DisclosurePanel,
-  Menu,
-  MenuButton,
-  MenuItem,
-  MenuItems,
-} from "@headlessui/vue";
-import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/vue/24/outline";
-
-const user = {
-  name: "Tom Cook",
-  email: "tom@example.com",
-  imageUrl:
-    "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-};
-const navigation = [
-  { name: "Home", to: { name: "home" } },
-  { name: "Images", to: { name: "images" } },
-];
-
-function logout() {
-  console.log("logout");
-}
-</script>

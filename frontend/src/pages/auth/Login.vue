@@ -9,9 +9,9 @@ const data = ref({
   password: "",
 });
 
-const submit = () => {
-  console.log(data.value);
+const errorMessage = ref("");
 
+const submit = () => {
   axiosClient.get("/sanctum/csrf-cookie").then((response) => {
     axiosClient
       .post("/login", data.value)
@@ -20,6 +20,7 @@ const submit = () => {
       })
       .catch((error) => {
         console.log(error);
+        errorMessage.value = error.response.data.errors.email[0];
       });
   });
 };
@@ -33,6 +34,9 @@ const submit = () => {
       >
         Sign in to your account
       </h2>
+
+      <p v-if="errorMessage" class="text-red-500">{{ errorMessage }}</p>
+
       <form @submit.prevent="submit" class="space-y-3" method="POST">
         <div>
           <label for="email" class="block font-medium text-gray-900 text-sm/6"
