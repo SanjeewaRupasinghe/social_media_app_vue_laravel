@@ -8,31 +8,6 @@ import useUserStore from "./store/user";
 import Images from "./pages/Image.vue";
 
 const routes = [
-  // {
-  //   path: "/",
-  //   component: DefaultLayout,
-  //   children: [
-  //     {
-  //       path: "",
-  //       name: "home",
-  //       component: Home,
-  //     },
-  //     {
-  //       path: "images",
-  //       name: "images",
-  //       component: Images,
-  //     },
-  //   ],
-  //   beforeEnter: async (to, from, next) => {
-  //     try {
-  //       const userStore = useUserStore();
-  //       await userStore.fetchUser();
-  //       next()
-  //     } catch (error) {
-  //       next(false);
-  //     }
-  //   },
-  // },  
   {
     path: "/",
     name: "home",
@@ -55,11 +30,6 @@ const routes = [
     name: "signup",
     component: Signup,
   },
-  // {
-  //   path: "/profile",
-  //   name: "profile",
-  //   component: Profile,
-  // },
   {
     path: "/:catchAll(.*)",
     name: "not-found",
@@ -85,19 +55,13 @@ const router = createRouter({
 router.beforeEach(async (to, from, next) => {
   const authStore = useUserStore()
   
-  // Initialize Sanctum on first load
   if (!authStore.user) {
     try {
-      console.log("try");
-      console.log(authStore.user);
-      console.log(authStore.loading);
-      
       await authStore.fetchUser()
     } catch (error) {
       console.error('Failed to initialize Sanctum:', error)
     }
   }
-  
   
   next()
 })

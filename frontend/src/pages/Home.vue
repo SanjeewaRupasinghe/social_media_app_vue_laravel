@@ -1,6 +1,35 @@
 <script setup>
 import DefaultLayout from "@/components/DefaultLayout.vue";
 import { PhotoIcon } from "@heroicons/vue/24/solid";
+import useUserStore from "@/store/user";
+import { ref } from "vue";
+import axiosClient from "@/axios";
+
+const userStore=useUserStore();
+
+const data=ref({
+    image:'',
+    description:'',
+    user_id:'',
+})
+
+async function getUser() {
+    await userStore.fetchUser();
+    data.value.user_id=userStore.user.id;
+}
+getUser();
+
+function submit() {
+
+  axiosClient.get('sanctum/csrf-cookie')
+  .then((response)=>{
+    console.log(response);    
+    axiosClient.post('/api/post/create',data.value).then((response)=>{
+      console.log(response);
+    })
+  });
+
+}
 </script>
 
 <template>
@@ -51,10 +80,11 @@ import { PhotoIcon } from "@heroicons/vue/24/solid";
           </div>
           <div class="col-span-full">
             <label for="about" class="block font-medium text-gray-900 text-sm/6"
-              >About</label
+              >Description</label
             >
             <div class="mt-2">
               <textarea
+                v-model="data.description"
                 name="about"
                 id="about"
                 rows="3"
@@ -64,6 +94,7 @@ import { PhotoIcon } from "@heroicons/vue/24/solid";
           </div>
           <div class="mt-3 col-span-full float-end">
             <button
+              @click="submit"
               type="submit"
               class="px-3 py-2 text-sm font-semibold text-white bg-indigo-600 rounded-md shadow-xs hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
             >
