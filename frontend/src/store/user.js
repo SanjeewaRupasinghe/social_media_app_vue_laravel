@@ -7,32 +7,16 @@ const useUserStore = defineStore("user", {
   }),
   actions: {
     fetchUser() {
-
-        axiosClient.get("/sanctum/csrf-cookie").then((response) => {
-            axiosClient.get("/api/user").then((response) => {
-              console.log("========================");
-              
-              this.user = response.data;
-
-              console.log(this.user);
-              
-            }).catch((error) => {
-              console.log(error);
-            });
+      axiosClient.get("/sanctum/csrf-cookie").then((response) => {
+        axiosClient
+          .get("/api/user")
+          .then((response) => {
+            this.user = response.data;
+          })
+          .catch((error) => {
+            console.log(error);
           });
-
-
-    //   axiosClient.get("/sanctum/csrf-cookie").then((response) => {
-    //     axiosClient
-    //       .get("/api/user")
-    //       .then((response) => {
-    //         console.log(response);
-    //         this.user = response.data;
-    //       })
-    //       .catch((error) => {
-    //         console.log(error);
-    //       });
-    //   });
+      })
     },
   },
 });

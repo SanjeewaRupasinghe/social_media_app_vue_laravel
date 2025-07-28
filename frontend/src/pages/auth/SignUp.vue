@@ -11,10 +11,8 @@ const data = ref({
 });
 
 const submit = () => {
-  console.log(data.value);
   axiosClient.get("/sanctum/csrf-cookie").then((response) => {
     axiosClient.post("/register", data.value).then((response) => {
-      console.log(response);
     }).catch((error) => {
       console.log(error);
     });
