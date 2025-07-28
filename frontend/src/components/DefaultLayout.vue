@@ -10,10 +10,10 @@ const navigation = [
   { name: 'Images', to: {name: "images"}, current: true }
 ]
 
-const userStore = useUserStore();
-userStore.fetchUser();
+// const userStore = useUserStore();
+// userStore.fetchUser();
 
-const user = computed(() => userStore.user);
+// const user = computed(() => userStore.user);
 // getAuthUser();
 // async function getAuthUser(){
 //   console.log("abc");

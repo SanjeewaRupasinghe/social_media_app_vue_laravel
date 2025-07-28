@@ -73,12 +73,32 @@ const router = createRouter({
 });
 
 // Global route guard
+// router.beforeEach(async (to, from, next) => {
+//   const auth = useUserStore()
+//   if (to.meta.requiresAuth) {
+//     if (!auth.user) await auth.fetchUser()
+//     if (!auth.user) return next('/login')
+//   }
+//   next()
+// })
+
 router.beforeEach(async (to, from, next) => {
-  const auth = useUserStore()
-  if (to.meta.requiresAuth) {
-    if (!auth.user) await auth.fetchUser()
-    if (!auth.user) return next('/login')
+  const authStore = useUserStore()
+  
+  // Initialize Sanctum on first load
+  if (!authStore.user) {
+    try {
+      console.log("try");
+      console.log(authStore.user);
+      console.log(authStore.loading);
+      
+      await authStore.fetchUser()
+    } catch (error) {
+      console.error('Failed to initialize Sanctum:', error)
+    }
   }
+  
+  
   next()
 })
 
