@@ -5,4 +5,7 @@ import {createPinia} from "pinia";
 
 const pinia = createPinia();
 
-createApp(App).use(router).use(pinia).mount("#app");
+const app=createApp(App);
+app.use(router)
+app.use(pinia)
+app.mount("#app");

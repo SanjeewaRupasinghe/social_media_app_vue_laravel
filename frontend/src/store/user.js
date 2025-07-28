@@ -10,8 +10,12 @@ const useUserStore = defineStore("user", {
 
         axiosClient.get("/sanctum/csrf-cookie").then((response) => {
             axiosClient.get("/api/user").then((response) => {
-              console.log(response);
+              console.log("========================");
+              
               this.user = response.data;
+
+              console.log(this.user);
+              
             }).catch((error) => {
               console.log(error);
             });

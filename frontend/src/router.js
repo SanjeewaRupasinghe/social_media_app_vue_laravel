@@ -8,31 +8,43 @@ import useUserStore from "./store/user";
 import Images from "./pages/Image.vue";
 
 const routes = [
+  // {
+  //   path: "/",
+  //   component: DefaultLayout,
+  //   children: [
+  //     {
+  //       path: "",
+  //       name: "home",
+  //       component: Home,
+  //     },
+  //     {
+  //       path: "images",
+  //       name: "images",
+  //       component: Images,
+  //     },
+  //   ],
+  //   beforeEnter: async (to, from, next) => {
+  //     try {
+  //       const userStore = useUserStore();
+  //       await userStore.fetchUser();
+  //       next()
+  //     } catch (error) {
+  //       next(false);
+  //     }
+  //   },
+  // },  
   {
     path: "/",
-    component: DefaultLayout,
-    children: [
-      {
-        path: "",
-        name: "home",
-        component: Home,
-      },
-      {
-        path: "images",
-        name: "images",
-        component: Images,
-      },
-    ],
-    beforeEnter: async (to, from, next) => {
-      try {
-        const userStore = useUserStore();
-        await userStore.fetchUser();
-        next()
-      } catch (error) {
-        next(false);
-      }
-    },
-  },  
+    name: "home",
+    component: Home,
+    meta: { requiresAuth: true }
+  },
+  {
+    path: "/images",
+    name: "images",
+    component: Images,
+    meta: { requiresAuth: true }
+  },
   {
     path: "/login",
     name: "login",
@@ -59,5 +71,15 @@ const router = createRouter({
   history: createWebHistory(),
   routes,
 });
+
+// Global route guard
+router.beforeEach(async (to, from, next) => {
+  const auth = useUserStore()
+  if (to.meta.requiresAuth) {
+    if (!auth.user) await auth.fetchUser()
+    if (!auth.user) return next('/login')
+  }
+  next()
+})
 
 export default router;
